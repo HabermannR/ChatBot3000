@@ -6,6 +6,7 @@ import anthropic
 import firebase_admin
 from firebase_admin import credentials, firestore
 import datetime
+import os
 
 # Initialize Firebase Admin SDK (if not already initialized)
 if not firebase_admin._apps:
@@ -182,7 +183,14 @@ def main():
                 st.error("Failed to obtain ID token")
 
         except Exception as e:
-            st.error(f"Authentication error: {str(e)}")
+            os.write(1, f"Authentication error: {str(e)}".encode())
+            st.error("Authentication failed. Please try again.")  # Show generic message
+
+    ALLOWED_EMAIL = st.secrets["google"]["allowed_users"]  # Your email in secrets
+    if st.session_state.user_info.get('email') != ALLOWED_EMAIL:
+        st.error("Access denied. Only the app owner can log in.")
+        st.session_state.user_info = None
+        return
 
     # Show login button or user info
     if st.session_state.user_info and db:
