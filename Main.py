@@ -331,14 +331,28 @@ def main():
 
     else:
         st.write("Please sign in to access the full application.")
-        # Create Google Sign-In URL
-        auth_url = "https://accounts.google.com/o/oauth2/auth"
-        scope = "openid email profile"
-        auth_endpoint = f"{auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline"
-        # Display login button
-        st.markdown(
-            f'<a href="{auth_endpoint}" target="_self"><button style="background-color:#4285F4; color:white; border:none; border-radius:4px; padding:10px 20px; font-size:16px;">Sign in with Google</button></a>',
-            unsafe_allow_html=True)
+        
+        # Use Google's official Sign-In button with proper branding
+        st.markdown("""
+        <div id="g_id_onload"
+           data-client_id="{client_id}"
+           data-context="signin"
+           data-ux_mode="redirect"
+           data-login_uri="{redirect_uri}"
+           data-auto_prompt="false">
+        </div>
+    
+        <div class="g_id_signin"
+           data-type="standard"
+           data-shape="rectangular"
+           data-theme="outline"
+           data-text="signin_with"
+           data-size="large"
+           data-logo_alignment="left">
+        </div>
+        
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        """.format(client_id=client_id, redirect_uri=redirect_uri), unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
