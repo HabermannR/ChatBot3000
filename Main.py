@@ -332,15 +332,19 @@ def main():
     else:
         st.write("Please sign in to access the full application.")
         
-        # Create Google Sign-In URL with specific parameters for corporate environments
+        # Create Google Sign-In URL with prompt parameter
         auth_url = "https://accounts.google.com/o/oauth2/auth"
         scope = "openid email profile"
-        auth_endpoint = f"{auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline&prompt=select_account&hd=domain.com"
+        auth_endpoint = f"{auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline&prompt=select_account"
         
-        # Replace "domain.com" with your company's domain if applicable
-        
-        # Use a simple button that's likely to display properly
-        st.button("Sign in with Google", on_click=lambda: st.redirect(auth_endpoint))
+        # Use Streamlit's built-in link functionality
+        if st.button("Sign in with Google"):
+            js = f"""
+            <script>
+                window.location.href = "{auth_endpoint}";
+            </script>
+            """
+            st.components.v1.html(js, height=1)
 
 
 if __name__ == "__main__":
