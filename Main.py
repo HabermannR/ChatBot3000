@@ -332,27 +332,15 @@ def main():
     else:
         st.write("Please sign in to access the full application.")
         
-        # Use Google's official Sign-In button with proper branding
-        st.markdown("""
-        <div id="g_id_onload"
-           data-client_id="{client_id}"
-           data-context="signin"
-           data-ux_mode="redirect"
-           data-login_uri="{redirect_uri}"
-           data-auto_prompt="false">
-        </div>
-    
-        <div class="g_id_signin"
-           data-type="standard"
-           data-shape="rectangular"
-           data-theme="outline"
-           data-text="signin_with"
-           data-size="large"
-           data-logo_alignment="left">
-        </div>
+        # Create Google Sign-In URL with specific parameters for corporate environments
+        auth_url = "https://accounts.google.com/o/oauth2/auth"
+        scope = "openid email profile"
+        auth_endpoint = f"{auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline&prompt=select_account&hd=domain.com"
         
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
-        """.format(client_id=client_id, redirect_uri=redirect_uri), unsafe_allow_html=True)
+        # Replace "domain.com" with your company's domain if applicable
+        
+        # Use a simple button that's likely to display properly
+        st.button("Sign in with Google", on_click=lambda: st.redirect(auth_endpoint))
 
 
 if __name__ == "__main__":
