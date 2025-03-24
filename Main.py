@@ -187,10 +187,10 @@ def main():
             st.error("Authentication failed. Please try again.")  # Show generic message
 
     ALLOWED_EMAIL = st.secrets["google"]["allowed_users"]  # Your email in secrets
-    #if st.session_state.user_info.get('email') != ALLOWED_EMAIL:
-    #    st.error("Access denied. Only the app owner can log in.")
-    #    st.session_state.user_info = None
-    #    return
+    if st.session_state.user_info.get('email') != ALLOWED_EMAIL:
+        st.error("Access denied. Only the app owner can log in.")
+        st.session_state.user_info = None
+        return
 
     # Show login button or user info
     if st.session_state.user_info and db:
@@ -331,20 +331,14 @@ def main():
 
     else:
         st.write("Please sign in to access the full application.")
-        
-        # Create Google Sign-In URL with prompt parameter
+        # Create Google Sign-In URL
         auth_url = "https://accounts.google.com/o/oauth2/auth"
         scope = "openid email profile"
-        auth_endpoint = f"{auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline&prompt=select_account"
-        
-        # Use Streamlit's built-in link functionality
-        if st.button("Sign in with Google"):
-            js = f"""
-            <script>
-                window.location.href = "{auth_endpoint}";
-            </script>
-            """
-            st.components.v1.html(js, height=1)
+        auth_endpoint = f"{auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline"
+        # Display login button
+        st.markdown(
+            f'<a href="{auth_endpoint}" target="_self"><button style="background-color:#4285F4; color:white; border:none; border-radius:4px; padding:10px 20px; font-size:16px;">Sign in with Google</button></a>',
+            unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
