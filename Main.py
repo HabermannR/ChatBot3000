@@ -187,10 +187,10 @@ def main():
             st.error("Authentication failed. Please try again.")  # Show generic message
 
     ALLOWED_EMAIL = st.secrets["google"]["allowed_users"]  # Your email in secrets
-    if st.session_state.user_info.get('email') != ALLOWED_EMAIL:
-        st.error("Access denied. Only the app owner can log in.")
-        st.session_state.user_info = None
-        return
+    #if st.session_state.user_info.get('email') != ALLOWED_EMAIL:
+    #    st.error("Access denied. Only the app owner can log in.")
+    #    st.session_state.user_info = None
+    #    return
 
     # Show login button or user info
     if st.session_state.user_info and db:
